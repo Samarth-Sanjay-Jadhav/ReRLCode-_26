@@ -1,1 +1,82 @@
+# 🚦 Autonomous Traffic Signal Control using Deep Reinforcement Learning
 
+A Deep Q-Network (DQN) agent that dynamically optimizes traffic signal timings to minimize vehicle wait times and queue lengths at a 4-way intersection, validated against a fixed-timer baseline.
+
+## 🏗️ Architecture
+
+- **State:** Queue Length, Vehicle Count, Wait Time, Phase (27 features)
+- **Action:** Keep current phase (0) or Switch to next phase (1)
+- **Reward:** -0.25 × Queue − 0.25 × Wait Time
+- **Network:** Input(27) → Dense(64) → ReLU → Dense(64) → ReLU → Output(2)
+
+## 📊 Results
+
+| Metric | DQN Agent | Fixed Timer |
+|---|---|---|
+| Avg Total Reward | -78.40 | -94.83 |
+| Avg Queue Length | 0.830 | 0.998 |
+| Avg Wait Time | 4.079 | 5.507 |
+| Max Queue Length | 4.500 | 4.900 |
+
+> DQN agent achieved **17% reduction in queue length** and **26% reduction
+in wait time** vs fixed-timer baseline on unbalanced traffic scenario.
+
+## 🚀 How to Run
+
+**1. Setup environment**
+
+    conda create -n traffic-rl python=3.10
+    conda activate traffic-rl
+    pip install torch sumo-rl stable-baselines3 numpy pandas matplotlib
+
+**2. Train the DQN agent**
+
+    python training/train.py
+
+**3. Evaluate DQN vs Fixed Timer**
+
+    python evaluation/evaluate.py
+
+## 🛠️ Tech Stack
+
+- **Simulator:** SUMO (Simulation of Urban MObility)
+- **RL Framework:** sumo-rl + PyTorch
+- **Algorithm:** Deep Q-Network (DQN)
+- **Baseline:** Fixed Timer Controller
+
+## 📁 Project Structure
+
+    traffic-signal-rl/
+    ├── nets/               # SUMO road network files
+    ├── agents/             # DQN and Fixed Timer agents
+    ├── models/             # PyTorch Q-Network architecture
+    ├── training/           # Training loop and Replay Buffer
+    ├── evaluation/         # Evaluation and result plotting
+    ├── results/            # Training logs and comparison plots
+    └── config.py           # All hyperparameters in one place
+
+## 🎬 Demonstration
+
+### Streamlit Dashboard
+Run the interactive dashboard to see all results and charts:
+
+    streamlit run dashboard.py
+
+### SUMO GUI Visual Demo
+Watch DQN vs Fixed Timer controlling traffic live:
+
+    python demo_gui.py
+
+### Side by Side GIF Comparison
+![Fixed Timer vs DQN](results/gifs/fixed_timer.gif)
+![DQN Agent](results/gifs/dqn_agent.gif)
+
+## 📚 Reference
+
+Based on [IntelliLight: A Reinforcement Learning Approach for Intelligent Traffic Light Control](https://www.researchgate.net/publication/326504263_IntelliLight_A_Reinforcement_Learning_Approach_for_Intelligent_Traffic_Light_Control) — Wei et al., KDD 2018.
+
+## 👤 Author
+
+Built by **Samarth Sanjay Jadhav** | BTech Project 2026 | Based on IntelliLight (KDD 2018)
+
+[GitHub Repository](https://github.com/Samarth-Sanjay-Jadhav/Autonomous-Traffic-Signal-Control-RL)
